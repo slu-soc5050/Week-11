@@ -1,0 +1,278 @@
+
+. codebook, header notes
+
+               Dataset:  Lab-11-Replication/Lab-11.dta
+            Last saved:  12 Nov 2012 11:10
+                         DATA HAVE CHANGED SINCE LAST SAVED
+
+                 Label:  CPS analysis dataset - Lab 11 - 05 Nov 2016
+   Number of variables:  13
+Number of observations:  151,308
+                  Size:  4,690,548 bytes ignoring labels, etc.
+
+_dta:
+  1.  [SOUCE] Created from the original 2011 CPS dataset
+  2.  [DATA] Contains data on race, ethnicity, and hours worked
+  3.  [CHANGES] Dataset created by CHRIS on 05 Nov 2016
+
+--------------------------------------------------------------------------------
+race                                                             Simplified Race
+--------------------------------------------------------------------------------
+
+                  type:  numeric (float)
+                 label:  race
+
+                 range:  [1,7]                        units:  1
+         unique values:  6                        missing .:  18,536/151,308
+
+            tabulation:  Freq.   Numeric  Label
+                       107,712         1  White
+                        13,906         2  Black
+                         1,450         4  Native
+                         6,254         5  Asian
+                           671         6  Hawaiian
+                         2,779         7  MultiRacial
+                        18,536         .  
+
+race:
+  1.  [SOURCE] This is a recode of the variable PTDTRACE
+  2.  [DATA] All values for multi-racial individuals are collapsed into a single
+      category for analytical purposes.
+  3.  [DATA] Value 3 omitted - will be used for latinos in subsequent versions
+      of this variable.
+  4.  [CHANGES] Variable created by CHRIS on 05 Nov 2016
+
+--------------------------------------------------------------------------------
+latino                                               Simplified Latino Ethnicity
+--------------------------------------------------------------------------------
+
+                  type:  numeric (float)
+                 label:  noYes
+
+                 range:  [0,1]                        units:  1
+         unique values:  2                        missing .:  0/151,308
+
+            tabulation:  Freq.   Numeric  Label
+                       134,732         0  no
+                        16,576         1  yes
+
+latino:
+  1.  [SOURCE] This is a recode of the variable PRDTHSP
+  2.  [DATA] This variable excludes individuals who identify as spanish to
+      reflect differences between identifying as latino and hispanic.
+  3.  [CHANGES] Variable created by CHRIS on 05 Nov 2016
+
+--------------------------------------------------------------------------------
+raceEthnic                                               Combined Race/Ethnicity
+--------------------------------------------------------------------------------
+
+                  type:  numeric (float)
+                 label:  raceEthnic
+
+                 range:  [1,7]                        units:  1
+         unique values:  7                        missing .:  18,536/151,308
+
+            tabulation:  Freq.   Numeric  Label
+                        92,421         1  White, nonLatino
+                        13,311         2  Black, nonLatino
+                        16,576         3  Latino
+                         1,208         4  Native
+                         6,127         5  Asian
+                           608         6  Hawaiian
+                         2,521         7  MultiRacial
+                        18,536         .  
+
+raceEthnic:
+  1.  [SOURCE] This is a combination of the variables race and latino
+  2.  [DATA] Individuals are assigned as latino if the variable latino is equal
+      to 1, otherwise they retain their value in the variable race.
+  3.  [CHANGES] Variable created by CHRIS on 05 Nov 2016
+
+--------------------------------------------------------------------------------
+whiteBin                                       Race/Ethnicity - White, NonLatino
+--------------------------------------------------------------------------------
+
+                  type:  numeric (byte)
+                 label:  noYes
+
+                 range:  [0,1]                        units:  1
+         unique values:  2                        missing .:  18,536/151,308
+
+            tabulation:  Freq.   Numeric  Label
+                        40,351         0  no
+                        92,421         1  yes
+                        18,536         .  
+
+whiteBin:
+  1.  [SOURCE] This is created from raceEthnic.
+  2.  [CHANGES] Variable created by CHRIS on 05 Nov 2016
+
+--------------------------------------------------------------------------------
+blackBin                                       Race/Ethnicity - Black, NonLatino
+--------------------------------------------------------------------------------
+
+                  type:  numeric (byte)
+                 label:  noYes
+
+                 range:  [0,1]                        units:  1
+         unique values:  2                        missing .:  18,536/151,308
+
+            tabulation:  Freq.   Numeric  Label
+                       119,461         0  no
+                        13,311         1  yes
+                        18,536         .  
+
+blackBin:
+  1.  [SOURCE] This is created from raceEthnic.
+  2.  [CHANGES] Variable created by CHRIS on 05 Nov 2016
+
+--------------------------------------------------------------------------------
+latinoBin                                                Race/Ethnicity - Latino
+--------------------------------------------------------------------------------
+
+                  type:  numeric (byte)
+                 label:  noYes
+
+                 range:  [0,1]                        units:  1
+         unique values:  2                        missing .:  18,536/151,308
+
+            tabulation:  Freq.   Numeric  Label
+                       116,196         0  no
+                        16,576         1  yes
+                        18,536         .  
+
+latinoBin:
+  1.  [SOURCE] This is created from raceEthnic.
+  2.  [CHANGES] Variable created by CHRIS on 05 Nov 2016
+
+--------------------------------------------------------------------------------
+nativeBin                                       Race/Ethnicity - Native American
+--------------------------------------------------------------------------------
+
+                  type:  numeric (byte)
+                 label:  noYes
+
+                 range:  [0,1]                        units:  1
+         unique values:  2                        missing .:  18,536/151,308
+
+            tabulation:  Freq.   Numeric  Label
+                       131,564         0  no
+                         1,208         1  yes
+                        18,536         .  
+
+nativeBin:
+  1.  [SOURCE] This is created from raceEthnic.
+  2.  [CHANGES] Variable created by CHRIS on 05 Nov 2016
+
+--------------------------------------------------------------------------------
+asianBin                                                  Race/Ethnicity - Asian
+--------------------------------------------------------------------------------
+
+                  type:  numeric (byte)
+                 label:  noYes
+
+                 range:  [0,1]                        units:  1
+         unique values:  2                        missing .:  18,536/151,308
+
+            tabulation:  Freq.   Numeric  Label
+                       126,645         0  no
+                         6,127         1  yes
+                        18,536         .  
+
+asianBin:
+  1.  [SOURCE] This is created from raceEthnic.
+  2.  [CHANGES] Variable created by CHRIS on 05 Nov 2016
+
+--------------------------------------------------------------------------------
+hawaiiBin                    Race/Ethnicity - Native Hawaiian & Pacific Islander
+--------------------------------------------------------------------------------
+
+                  type:  numeric (byte)
+                 label:  noYes
+
+                 range:  [0,1]                        units:  1
+         unique values:  2                        missing .:  18,536/151,308
+
+            tabulation:  Freq.   Numeric  Label
+                       132,164         0  no
+                           608         1  yes
+                        18,536         .  
+
+hawaiiBin:
+  1.  [SOURCE] This is created from raceEthnic.
+  2.  [CHANGES] Variable created by CHRIS on 05 Nov 2016
+
+--------------------------------------------------------------------------------
+multiRaceBin                                       Race/Ethnicity - Multi-Racial
+--------------------------------------------------------------------------------
+
+                  type:  numeric (byte)
+                 label:  noYes
+
+                 range:  [0,1]                        units:  1
+         unique values:  2                        missing .:  18,536/151,308
+
+            tabulation:  Freq.   Numeric  Label
+                       130,251         0  no
+                         2,521         1  yes
+                        18,536         .  
+
+multiRaceBin:
+  1.  [SOURCE] This is created from raceEthnic.
+  2.  [CHANGES] Variable created by CHRIS on 05 Nov 2016
+
+--------------------------------------------------------------------------------
+hrsMain                                           Hours Worked > Mean - Main Job
+--------------------------------------------------------------------------------
+
+                  type:  numeric (float)
+                 label:  noYes
+
+                 range:  [0,1]                        units:  1
+         unique values:  2                        missing .:  0/151,308
+
+            tabulation:  Freq.   Numeric  Label
+                        96,727         0  no
+                        54,581         1  yes
+
+hrsMain:
+  1.  [SOURCE] This is created from PEHRUSL1.
+  2.  [CHANGES] Variable created by CHRIS on 05 Nov 2016
+
+--------------------------------------------------------------------------------
+hrsSecond                                       Hours Worked > Mean - Second Job
+--------------------------------------------------------------------------------
+
+                  type:  numeric (float)
+                 label:  noYes
+
+                 range:  [0,1]                        units:  1
+         unique values:  2                        missing .:  0/151,308
+
+            tabulation:  Freq.   Numeric  Label
+                       148,369         0  no
+                         2,939         1  yes
+
+hrsSecond:
+  1.  [SOURCE] This is created from PEHRUSL2.
+  2.  [CHANGES] Variable created by CHRIS on 05 Nov 2016
+
+--------------------------------------------------------------------------------
+hrsTotal                                             Hours Worked > Mean - Total
+--------------------------------------------------------------------------------
+
+                  type:  numeric (float)
+                 label:  noYes
+
+                 range:  [0,1]                        units:  1
+         unique values:  2                        missing .:  0/151,308
+
+            tabulation:  Freq.   Numeric  Label
+                        97,041         0  no
+                        54,267         1  yes
+
+hrsTotal:
+  1.  [SOURCE] This is created from PEHRUSLT.
+  2.  [CHANGES] Variable created by CHRIS on 05 Nov 2016
+
+. quietly log close codebook
