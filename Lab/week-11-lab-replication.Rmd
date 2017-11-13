@@ -1,0 +1,182 @@
+---
+title: "Lab-11 Replication File"
+output: html_notebook
+---
+
+## Introduction
+This notebook replicates the lab for week 11.
+
+## Dependencies
+This notebook requires the following packages:
+
+```{r}
+library(effsize)
+library(dplyr)
+library(ggplot2)
+library(psych)
+library(pwr)
+library(stargazer)
+library(testDriveR)
+```
+
+We also use the following custom function for creating correlation tables:
+
+```{r}
+corrTable <-function(.data, coef = c("pearson", "spearman"), listwise = TRUE, round = 3, pStar = TRUE, ...){
+
+  ## process dots
+  if (rlang::dots_n(...) > 1) {
+    .data <- dplyr::select(.data, ...)
+  }
+  
+  ## listwise deletion
+  if (listwise == TRUE) {
+    .data <- na.omit(.data)
+  }
+  
+  ## compute correlation matrix
+  inputMatrix <- as.matrix(.data)
+  corrMatrix <- Hmisc::rcorr(inputMatrix, type = coef)
+  
+  ## matrix of correlation coeficients
+  rCoef <- corrMatrix$r
+  
+  # matrix of p-values
+  pValues <- corrMatrix$P  
+  
+  ## round the correlation matrix values
+  rCoef <- format(round(cbind(rep(-1.11, ncol(.data)), rCoef), round))[,-1]
+  
+  ## statistical significance stars
+  if (pStar == TRUE) {
+    
+    ## Define notions for significance levels
+    stars <- ifelse(pValues < .001, "***", 
+                    ifelse(pValues < .01, "**", 
+                           ifelse(pValues < .05, "*", "")))
+    
+    ## add apropriate stars
+    rCoef <- matrix(paste(rCoef, stars, sep = ""), ncol = ncol(.data))    
+  }
+  
+  ## remove upper triangle
+  rCoef[upper.tri(rCoef, diag = FALSE)] <- ""
+  diag(rCoef) <- formatC(1, digits = round, format = "f")
+  
+  ## final formatting
+  rCoef <- as.data.frame(rCoef)
+  rCoef <- dplyr::mutate_if(rCoef, is.factor, as.character)
+  rownames(rCoef) <- colnames(.data)
+  colnames(rCoef) <- paste(colnames(.data), "", sep = "")
+  
+  ## return data frame
+  return(rCoef)
+} 
+```
+
+## Data
+We'll assign the data for the lab to a new object named `autoData`.
+
+```{r}
+autoData <- auto17
+```
+
+## Part 1: Correlation in `R`
+### Question 1
+The following syntax creates a correlation table for the variables `combFE`, `fuelCost`, and `cyl`.
+
+```{r}
+table <- corrTable(autoData, coef = "pearson", listwise = TRUE, round = 3, pStar = TRUE, combFE, fuelCost, cyl)
+table
+```
+
+### Question 2
+There is a strong, negative relationship between combined fuel efficiency and fuel cost ($r = -.899, p < .001$). The higher the fuel cost, the lower the fuel efficiency of the vehicle.
+
+### Question 3
+There is a strong, positive relationship between fuel cost and number of cylinders ($r = .843, p < .001$). The higher the number of cylinders in the engine, the higher the fuel cost of the vehicle. 
+
+### Question 4
+There is a strong, negative relationship between combined fuel efficiency and number of cylinders ($r = -.723, p < .001$). The higher the number of cylinders in the engine, the lower the fuel efficiency of the vehicle.
+
+### Question 5
+The following code creates a LaTeX formatted table
+
+```{r}
+stargazer(table, title = "Correlation Table for Vehicle Efficiency", summary = FALSE)
+```
+
+## Part 2: Scatterplots
+### Question 6
+The following code produces a scatterplot between the variables `combFE` and `fuelCost`.
+
+```{r}
+ggplot(data = autoData) +
+  geom_point(mapping = aes(x = combFE, y = fuelCost), position = "jitter")
+```
+
+We can see a clear, if non-linear, relationship between the two variables. As fuel efficiency increases, the cost of fuel declines.
+
+### Question 7
+
+The following code creates a binary variable representing gas guzzling vehicles (as defined by the federal Department of Transportation).
+
+```{r}
+autoData <- mutate(autoData, guzzlerLog = ifelse(guzzlerStr == "G", TRUE, FALSE))
+```
+
+### Question 8
+
+We can use the new guzzler variable to color the points of our scatterplot.
+
+```{r}
+ggplot(data = autoData) +
+  geom_point(mapping = aes(x = combFE, y = fuelCost, color = guzzlerLog), position = "jitter")
+```
+
+This plot shows that all of the guzzler vehicles have both high fuel cost and lost fuel efficiency.
+
+### Question 9
+
+We can also use the new guzzler variable as a faceting variable to more clearly highlight the pattern unique to guzzlers.
+
+```{r}
+ggplot(data = autoData) +
+  geom_point(mapping = aes(x = combFE, y = fuelCost, color = guzzlerLog), position = "jitter") +
+  facet_wrap( ~ guzzlerLog)
+```
+
+### Question 10
+This produces an error - apologies!
+
+## Part 3: Cronbach's Alpha
+### Question 11
+The following code creates a subset of the `autoData` data frame, and then calculates a Cronbach's alpha value from it. 
+
+```{r}
+autoData %>%
+  select(combFE, fuelCost, cyl) -> autoSelection
+
+psych::alpha(autoSelection, check.keys = TRUE)
+```
+
+The alpha value ($alpha = .93$) is particularly high, suggesting that there may be an underlying construct (engine efficiency) that all three of these variables measure.
+
+## Part 4: Sample Size Estimates
+## Question 12
+The following code calculates an estimated sample size for the given parameters.
+
+```{r}
+pwr.r.test(r = .89, sig.level = .05, power = .8, alternative = "two.sided")
+```
+
+We would need a sample of at least 7 people (in reality, 30) to see this effect size ($r=.89$) at the given level of power ($power = .8$)
+
+## Question 13
+The following code calculates an estimated sample size for the given parameters.
+
+```{r}
+pwr.r.test(r = .29, sig.level = .05, power = .9, alternative = "two.sided")
+```
+
+We would need a sample of at least 120 people to see this effect size ($r=.29$) at the given level of power ($power = .9$)
