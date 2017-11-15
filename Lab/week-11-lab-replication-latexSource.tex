@@ -1,0 +1,31 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{xcolor}
+
+\title{lab-11-replication}
+\author{Christopher Prener}
+\date{November 14, 2017}
+
+\begin{document}
+
+\maketitle
+
+\section{Correlation Table}
+
+\begin{table}[!htbp] \centering 
+  \caption{Correlation Table for Vehicle Efficiency} 
+  \label{} 
+\begin{tabular}{@{\extracolsep{5pt}} llll} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{1}{c}{Efficiency (mpg)} & \multicolumn{1}{c}{Fuel Cost (\$)} & \multicolumn{1}{c}{Cylinders} \\ 
+\hline \\[-1.8ex] 
+Efficiency (mpg) & {\color{white}$-$}1.000 &  &  \\ 
+Fuel Cost (\$) & $-0.899^{\ast\ast\ast}$  & {\color{white}$-$}1.000 &  \\ 
+Cylinders & $-0.723^{\ast\ast\ast}$  &  {\color{white}$-$}$0.843^{\ast\ast\ast}$  & {\color{white}$-$}1.000 \\ 
+\hline \\[-1.8ex] 
+\end{tabular} 
+\end{table} 
+
+\end{document}
